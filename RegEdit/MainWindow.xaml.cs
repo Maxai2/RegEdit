@@ -55,7 +55,7 @@ namespace RegEdit
                 sub.Items.Add(subsub);
             }
         }
-
+         
         private void GetSubKeys(RegistryKey SubKey)
         {
             foreach (string sub in SubKey.GetSubKeyNames())
