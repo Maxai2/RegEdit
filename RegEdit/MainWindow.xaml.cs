@@ -22,24 +22,15 @@ namespace RegEdit
 
             TreeItemsElem.Add(sub);
 
-            for (int i = 0; i < 5; i++)
-            {
-
-            }
-
             var keysRoot = Registry.ClassesRoot;
+
+            GetSubKeys(keysRoot);
+
             var keysUser = Registry.CurrentUser;
             var keysLCMachine = Registry.LocalMachine;
             var keysUsers = Registry.Users;
             var keysCurConf = Registry.CurrentConfig;
 
-            foreach (var item in keysRoot.GetSubKeyNames())
-            {
-                var subsub = new TreeViewItem();
-                subsub.Header = item;
-
-                sub.Items.Add(subsub);
-            }
         }
          
         private void GetSubKeys(RegistryKey SubKey)
@@ -47,9 +38,24 @@ namespace RegEdit
             foreach (string sub in SubKey.GetSubKeyNames())
             {
                 //MessageBox.Show(sub);
-                RegistryKey local = Registry.Users;
-                local = SubKey.OpenSubKey(sub, true);
-                GetSubKeys(local); // By recalling itself it makes sure it get all the subkey names
+
+                try
+                {
+                    RegistryKey local = Registry.Users;
+
+                    local = SubKey.OpenSubKey(sub, true);
+                    var subsub = new TreeViewItem();
+                    subsub.Header = sub;
+                
+                    TreeItemsElem.Add(subsub);
+
+                    GetSubKeys(local); // By recalling itself it makes sure it get all the subkey names
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
+
             }
         }
 
